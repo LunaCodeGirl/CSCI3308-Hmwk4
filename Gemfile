@@ -9,6 +9,7 @@ gem 'rails', '3.1.0'
 group :development, :test do
   gem 'sqlite3'
   #gem 'ruby-debug19', :require => 'ruby-debug'
+  gem 'awesome_print'
   gem 'debugger'
   gem 'database_cleaner'
   gem 'capybara'
@@ -16,6 +17,7 @@ group :development, :test do
   gem 'rspec-rails'
 end
 group :test do
+  gem 'pry'
   gem 'cucumber-rails'
   gem 'cucumber-rails-training-wheels'
 end
@@ -26,7 +28,7 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'therubyracer'              
+  #gem 'therubyracer', :platform => :ruby              
   gem 'sass-rails', "  ~> 3.1.0"
   gem 'coffee-rails', "~> 3.1.0"
   gem 'uglifier'
