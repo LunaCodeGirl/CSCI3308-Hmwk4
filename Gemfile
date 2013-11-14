@@ -17,7 +17,8 @@ group :development, :test do
   gem 'rspec-rails'
 end
 group :test do
-  gem 'pry'
+  # gem 'pry-debugger'
+  gem 'jazz_hands'
   gem 'cucumber-rails'
   gem 'cucumber-rails-training-wheels'
 end

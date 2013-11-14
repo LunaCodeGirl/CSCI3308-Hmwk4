@@ -37,9 +37,7 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   #   iterate over the ratings and reuse the "When I check..." or
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
   
-  binding.pry
-
-  ratings = rating_list.gsub(",", " ").split
+  ratings = rating_list.split(',')
 
   if uncheck == nil
     
@@ -65,17 +63,30 @@ When /I check all of the ratings/ do
 end
 
 
-Then /^I should (not)? see movies with the following ratings: (.*)/ do |isVisible, rating_list|
+Then /^I should (not )?see movies with the following ratings: (.*)/ do |isVisible, rating_list|
 
   movies_with_rating = Movie.where(:rating => [rating_list.split(',')])
+
+  titles = movies_with_rating.map do |movie|
+
+    movie[:title]
+
+  end
 
   selected_movies = page.all('#movies tr td:first-child')
 
   binding.pry
   
-  if isVisible
-    check_movie != @selected_movies
-  else
-    check_movie == @selected_movies
+  selected_movies.each do |check_movie|
+
+    title = check_movie.native.text
+
+    if isVisible == nil
+      titles.should include(title)
+    else
+      titles.should_not include title
+    end
+
   end
+
 end
