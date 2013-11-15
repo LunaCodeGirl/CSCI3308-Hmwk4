@@ -21,10 +21,12 @@ Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   #  ensure that that e1 occurs before e2.
   #  page.body is the entire content of the page as a string.
   
-  pos1 = page.body.match /#{e1}/
-  pos2 = page.body.match /#{e2}/
+  # binding.pry
+  
+  pos1 = page.body =~ /#{e1}/
+  pos2 = page.body =~ /#{e2}/
 
-  pos1 should be < pos2
+  pos1.should be < pos2
 
 end
 
@@ -36,8 +38,10 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   # HINT: use String#split to split up the rating_list, then
   #   iterate over the ratings and reuse the "When I check..." or
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
-  
+
   ratings = rating_list.split(',')
+
+  # binding.pry
 
   if uncheck == nil
     
@@ -56,9 +60,17 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
 end
 
 
-When /I check all of the ratings/ do 
+When /I (un)?check all of the ratings/ do |uncheck| 
 
-  step "I check the following ratings: G,PG,PG-13,R"
+  ratings = Movie.all_ratings.join(",")
+
+  # binding.pry
+
+  if uncheck == nil
+    step "I check the following ratings: #{ratings}"
+  else
+    step "I uncheck the following ratings: #{ratings}"
+  end
 
 end
 
@@ -75,7 +87,7 @@ Then /^I should (not )?see movies with the following ratings: (.*)/ do |isVisibl
 
   selected_movies = page.all('#movies tr td:first-child')
 
-  binding.pry
+  # binding.pry
   
   selected_movies.each do |check_movie|
 
@@ -90,3 +102,24 @@ Then /^I should (not )?see movies with the following ratings: (.*)/ do |isVisibl
   end
 
 end
+
+
+Then /I should see (all|none) of the movies/ do |quantity|
+
+  movies = Movie.all
+
+  shown_movies = page.all('#movies tr td:first-child')
+
+  # binding.pry
+
+  if quantity == 'all'
+    shown_movies.length.should == movies.length
+  else
+    shown_movies.length.should == 0
+  end
+
+end
+
+
+
+
